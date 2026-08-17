@@ -1,0 +1,35 @@
+services:
+  safety-judge:
+    image: python:3.11-slim
+    container_name: safety-judge
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./judge_src:/app
+    working_dir: /app
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - TARGET_CONTAINER_NAME=untrusted-agent
+    command: sh -c "pip install --quiet docker openai && python judge.py"
+    depends_on:
+      - untrusted-agent
+
+  untrusted-agent:
+    image: python:3.11-slim
+    container_name: untrusted-agent
+    volumes:
+      - ./agent_workspace:/workspace
+    working_dir: /workspace
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - agent-isolated-net
+    command: python malicious_agent.py
+
+networks:
+  agent-isolated-net:
+    internal: true
