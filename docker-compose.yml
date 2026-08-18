@@ -17,7 +17,7 @@ services:
     image: python:3.11-slim
     container_name: untrusted-agent
     volumes:
-      - ./agent_workspace:/workspace
+      - ./agent_workspace:/workspace:ro
     working_dir: /workspace
     read_only: true
     tmpfs:
