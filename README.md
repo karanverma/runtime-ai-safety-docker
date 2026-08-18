@@ -16,7 +16,7 @@ flowchart TB
 
     C["Independent Judge<br/>Retrieves container logs<br/>through the Docker API"]
 
-    D["LLM Evaluation<br/>gpt-4o-mini"]
+    D["Safety Evaluation<br/>Deterministic default<br/>LLM optional"]
 
     E["Structured Safety Report<br/>Behavior inconsistency<br/>Out-of-workspace access<br/>PASS / FAIL<br/>Audit justification"]
 
