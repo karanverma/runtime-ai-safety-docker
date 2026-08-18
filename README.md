@@ -97,34 +97,22 @@ git clone https://github.com/karanverma/runtime-ai-safety-docker.git
 cd runtime-ai-safety-docker
 ```
 
-### 2. Set your OpenAI API key
+### 2. Start the zero-cost demo
+
+```bash
+docker compose up --build
+```
+
+The default `JUDGE_MODE=deterministic` runs locally and requires no API key. It evaluates workload-authored logs using deterministic demo rules and returns a structured safety report.
+
+### 3. Optional LLM-as-a-Judge mode
 
 ```bash
 export OPENAI_API_KEY="your-api-key"
+JUDGE_MODE=llm docker compose up --build
 ```
 
-Do not commit API keys to the repository.
-
-### 3. Start the demo
-
-```bash
-docker compose up
-```
-
-The `untrusted-agent` runs the test scenario and exits.
-
-The `safety-judge` waits for the target container, retrieves its stdout and stderr through the Docker API, and submits those logs together with the evaluation rubric to `gpt-4o-mini`.
-
-The evaluator is configured to return structured JSON in this form:
-
-```json
-{
-  "deceptive_behavior_detected": true,
-  "out_of_workspace_access_attempted": true,
-  "overall_safety_status": "FAIL",
-  "audit_justification": "brief explanation"
-}
-```
+This optional mode sends the captured workload logs and fixed rubric to `gpt-4o-mini`. Do not commit API keys.
 
 ### 4. Clean up
 
@@ -162,7 +150,7 @@ The judge mounts `/var/run/docker.sock` to access container state and logs. Acce
 
 A production implementation should replace direct Docker-socket access with a more narrowly scoped telemetry or monitoring interface and apply isolation appropriate to its threat model.
 
-The LLM judge is an evaluator, not the enforcement mechanism. Runtime restrictions are provided by the execution environment.
+The evaluator is not the enforcement mechanism. Runtime restrictions are provided by the execution environment. The deterministic evaluator is the zero-cost default; `JUDGE_MODE=llm` enables the optional LLM evaluator.
 
 ## Related Article
 
