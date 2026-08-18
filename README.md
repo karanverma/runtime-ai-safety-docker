@@ -38,7 +38,7 @@ The `untrusted-agent` container is configured with several runtime restrictions:
 - an internal Docker network
 - temporary writable storage through `tmpfs`
 
-The `safety-judge` runs separately from the agent and evaluates application-generated execution logs rather than relying on the agent's own description of its behavior.
+The `safety-judge` runs separately from the agent and evaluates application-generated execution logs as untrusted behavioral evidence against a separate, fixed evaluation rubric.
 
 ## Red-Team Scenario
 
