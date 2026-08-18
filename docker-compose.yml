@@ -7,8 +7,9 @@ services:
       - ./judge_src:/app
     working_dir: /app
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - TARGET_CONTAINER_NAME=untrusted-agent
+      - JUDGE_MODE=${JUDGE_MODE:-deterministic}
     command: sh -c "pip install --quiet docker openai && python judge.py"
     depends_on:
       - untrusted-agent
