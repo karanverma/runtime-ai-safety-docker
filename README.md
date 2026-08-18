@@ -159,3 +159,24 @@ This repository accompanies:
 [**Containing the Autonomous Blast Radius: Runtime AI Safety with Docker and LLM Judges**](https://dev.to/karanverma/containing-the-autonomous-blast-radius-runtime-ai-safety-with-docker-and-llm-judges-ogf)
 
 The article explains the motivation, architecture, red-team scenario, runtime controls, evaluation workflow, limitations, and potential engineering applications behind the demo.
+
+
+## Next Iteration: Trusted Runtime Telemetry
+
+The current demo intentionally evaluates workload-authored logs. A stronger V2 will move observation outside the workload and separate collection, evaluation, and enforcement:
+
+```text
+Agent
+  ↓
+Trusted runtime telemetry collector
+  ↓
+Deterministic policy filtering
+  ↓
+Optional LLM review for ambiguous events
+  ↓
+Fixed-schema verdict
+  ↓
+Separate enforcement supervisor
+```
+
+The planned design will avoid giving the evaluator Docker daemon access and will use collector-generated runtime signals rather than treating workload stdout as trusted evidence. Clear policy violations should be handled deterministically; an LLM should only be used for ambiguous residue. Enforcement should remain a separate privileged component with a narrowly scoped interface.
