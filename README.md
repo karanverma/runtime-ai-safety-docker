@@ -26,7 +26,7 @@ flowchart TB
     D --> E
 ```
 
-The Docker runtime provides the execution boundaries. The LLM judge evaluates observable behavior; it is not the enforcement mechanism.
+The Docker runtime provides the execution boundaries. The evaluator assesses observable behavior; it is not the enforcement mechanism. Deterministic evaluation is the zero-cost default, with an optional LLM-as-a-Judge mode.
 
 ## Runtime Controls
 
